@@ -1,0 +1,176 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+\begin{center}
+\textbf{CPSC 223 Spring 2025 Exam \#2}\\
+Tuesday, April 8, 2025
+\end{center}
+
+\noindent
+Write your name and NetID on this answer sheet and the cover of this exam booklet, but do not open the exam booklet until told to do so. Turn in both your answer sheet and exam booklet.\\
+Name: \underline{\hspace{3in}} \quad NetID: \underline{\hspace{2in}}
+
+\bigskip
+
+\section*{Problem 1 (9 points): Hashtables}
+\begin{enumerate}[label=\alph*)]
+\item Given an initially empty hashtable of capacity 4 using open addressing with linear probing and a resize threshold $\alpha>0.5$, mark an X in the box for the operation(s) below that will trigger a resize:
+
+\begin{itemize}
+\item [\ ] insert 10
+\item [\ ] insert 22
+\item [\ ] insert 31
+\item [\ ] insert 4
+\item [\ ] insert 15
+\end{itemize}
+
+\item Suppose we delete key 22 and then search for key 15. Mark an X for each statement that is guaranteed true:
+
+\begin{itemize}
+\item [\ ] Search finds key 15 without probing past its initial slot.
+\item [\ ] Search may require probing past deleted slots.
+\item [\ ] Search fails if a tombstone is not handled.
+\end{itemize}
+
+\item What assumption about the hash function ensures average-case $O(1)$ performance? \\
+\underline{\hspace{3in}}
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 2 (18 points): Binary Search Trees}
+For each code fragment below, write the number(s) of the fragments that correctly construct a BST containing the keys [5, 2, 8, 1, 3] when inserted in that order.
+
+\begin{enumerate}
+\item \verb|Node *root = NULL; insert(&root, 5); insert(&root, 2); insert(&root, 8); insert(&root, 1); insert(&root, 3);|
+\item \verb|Node *root = create_node(5); root->left = create_node(2); root->left->left = create_node(1); root->left->right = create_node(3); root->right = create_node(8);|
+\item \verb|Node *arr[5]; arr[0] = create_node(5); arr[1] = create_node(2); arr[2] = create_node(8); arr[3] = create_node(1); arr[4] = create_node(3);|  % no pointer assignments
+\item \verb|Node *root = create_node(5); insert(&root, 8); insert(&root, 2); insert(&root, 1); insert(&root, 3);|
+\item \verb|Node *root = create_node(5); insert(&root, 2); insert(&root, 8); insert(&root, 3); insert(&root, 1);|
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 3 (12 points): Graph Search and Shortest Paths}
+Consider the undirected graph $G$ with adjacency lists: \\
+A: B, C \quad B: A, D, E \quad C: A, F \quad D: B \quad E: B, F \quad F: C, E
+
+\begin{enumerate}[label=\alph*)]
+\item BFS traversal starting from A (visit neighbors in alphabetical order): \underline{\hspace{2in}} \\
+\item DFS preorder starting from A (visit neighbors in alphabetical order): \underline{\hspace{2in}} \\
+\item DFS postorder starting from A (visit neighbors in alphabetical order): \underline{\hspace{2in}} \\
+\item Shortest-path distances from A using Dijkstra's algorithm: \underline{\hspace{3in}} (list distances for A, B, C, D, E, F) \\
+\item Does G contain a cycle? (Yes/No): \underline{\hspace{1in}} \\
+\item Is G connected? (Yes/No): \underline{\hspace{1in}} \\
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 4 (16 points): k-d Tree Nearest Neighbor Search}
+Complete the following nearest-neighbor search code for a k-d tree.
+
+\begin{verbatim}
+typedef struct kdnode {
+    double point[2];
+    struct kdnode *left, *right;
+} kdnode;
+
+double square(double x) { return x*x; }
+
+void nearest(kdnode *root, double target[2], int depth, kdnode **best, double *bestDist) {
+    if (root == NULL) return;
+    int axis = depth % 2;
+    double d = square(root->point[0] - target[0]) + square(root->point[1] - target[1]);
+    if (d < *bestDist) {
+        *bestDist = d;
+        *best = root;
+    }
+    if (target[axis] < root->point[axis]) {
+        /* 1 */
+    } else {
+        /* 2 */
+    }
+    double diff = target[axis] - root->point[axis];
+    if (square(diff) < *bestDist) {
+        /* 3 */
+    }
+}
+\end{verbatim}
+
+\newpage
+
+\section*{Problem 5 (6 points): Heap Runtimes}
+Implementations of a priority queue:
+\begin{itemize}
+\item A: Binary heap
+\item B: Fibonacci heap
+\item C: Unsorted array
+\end{itemize}
+
+\begin{enumerate}
+\item $\Theta(1)$ amortized insert: \underline{\hspace{1in}}
+\item $\Theta(1)$ worst-case find-minimum: \underline{\hspace{1in}}
+\item $\Theta(\log n)$ worst-case extract-minimum: \underline{\hspace{1in}}
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 6 (8 points): Depth-First Search Code Completion}
+Complete the following recursive DFS traversal:
+
+\begin{verbatim}
+void dfs(Graph *g, int v) {
+    /* 1 */               // mark v as visited
+    printf("%d ", v);
+    for (int u = 0; u < g->n; u++) {
+        if (/* 2 */) {    // u is adjacent to v and not yet visited
+            /* 3 */       // recursive call on u
+        }
+    }
+}
+\end{verbatim}
+
+\newpage
+
+\section*{Problem 7 (15 points): AVL Tree Traversals}
+Starting from an empty AVL tree, insert the following sequences of keys.
+
+\begin{enumerate}[label=\alph*)]
+\item 30, 20, 10\\
+Preorder: \underline{\hspace{2in}} \quad Inorder: \underline{\hspace{2in}} \\
+\item 10, 20, 30\\
+Preorder: \underline{\hspace{2in}} \quad Inorder: \underline{\hspace{2in}} \\
+\item 20, 10, 30, 25, 27\\
+Preorder: \underline{\hspace{2in}} \quad Inorder: \underline{\hspace{2in}} \\
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 8 (16 points): Dijkstra's Algorithm Code Completion}
+\begin{verbatim}
+void dijkstra(Graph *g, int src) {
+    int dist[MAXV];
+    bool known[MAXV] = {false};
+    /* 1 */             // initialize dist[v] for all v
+    dist[src] = 0;
+    for (int i = 0; i < g->n; i++) {
+        int v = /* 2 */;    // select unknown v with minimum dist
+        known[v] = true;
+        for (Edge *e = g->adj[v]; e != NULL; e = e->next) {
+            int w = e->to;
+            int wgt = e->weight;
+            if (/* 3 */) {  // relaxation condition
+                /* 4 */     // update dist[w]
+            }
+        }
+    }
+}
+\end{verbatim}
+
+\end{document}

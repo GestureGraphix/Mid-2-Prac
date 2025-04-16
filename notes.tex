@@ -1,176 +1,324 @@
 \documentclass[12pt]{article}
 \usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+  \onehalfspacing
 \usepackage{enumitem}
-\usepackage{verbatim}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage[T1]{fontenc}
+  \setlist{nosep, leftmargin=*, itemsep=0.5em}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{amsmath,amssymb}
+
+\lstset{
+  breaklines=true,              
+  breakatwhitespace=true,       
+  breakautoindent=true,         
+  breakindent=0pt,              
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+  basicstyle=\small\ttfamily,   
+  columns=flexible,
+  frame=single,
+  showstringspaces=false,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange}
+}
 
 \begin{document}
+
 \begin{center}
-\textbf{CPSC 223 Spring 2025 Exam \#2}\\
-Tuesday, April 8, 2025
+  \textbf{CPSC 223 Spring 2025 Exam \#2 with Solutions}\\
+  Tuesday, April 8, 2025
 \end{center}
 
+\vspace{1em}
 \noindent
-Write your name and NetID on this answer sheet and the cover of this exam booklet, but do not open the exam booklet until told to do so. Turn in both your answer sheet and exam booklet.\\
-Name: \underline{\hspace{3in}} \quad NetID: \underline{\hspace{2in}}
+\textbf{Name:} \underline{\hspace{3in}}
+\quad
+\textbf{NetID:} \underline{\hspace{2in}}
 
-\bigskip
+\vspace{1em}
 
-\section*{Problem 1 (9 points): Hashtables}
+\section*{Problem 1 (9 points): Hashtables}
 \begin{enumerate}[label=\alph*)]
-\item Given an initially empty hashtable of capacity 4 using open addressing with linear probing and a resize threshold $\alpha>0.5$, mark an X in the box for the operation(s) below that will trigger a resize:
+  \item Given an initially empty hashtable of capacity 4 using open addressing with linear probing and a resize threshold \(\alpha=0.5\), mark an X for the operation(s) that trigger a resize:
+    \begin{itemize}
+      \item[\ ] insert 10
+      \item[\ ] insert 22
+      \item[X] insert 31
+      \item[\ ] insert 4
+      \item[\ ] insert 15
+    \end{itemize}
+    \\
+    \textbf{Explanation (a):}  
+    The load factor is the number of entries divided by capacity. After inserting 10 and 22, load = \(2/4 = 0.5\), which is at threshold but does not exceed it. Inserting 31 makes load = \(3/4 = 0.75 > 0.5\), so the table is resized at that insertion.
 
-\begin{itemize}
-\item [\ ] insert 10
-\item [\ ] insert 22
-\item [\ ] insert 31
-\item [\ ] insert 4
-\item [\ ] insert 15
-\end{itemize}
+  \item Suppose we delete key 22 and then search for key 15.  Mark an X for each statement that is guaranteed true:
+    \begin{itemize}
+      \item[\ ] Search finds key 15 without probing past its initial slot.
+      \item[X] Search may require probing past deleted slots.
+      \item[X] Search fails if a tombstone is not handled.
+    \end{itemize}
+    \\
+    \textbf{Explanation (b):}  
+    Deletion leaves a tombstone at 22’s slot. If 15 hashed to a later slot, the search must probe past the tombstone to find it. Without special handling of tombstones, the probe might stop early and wrongly report ‘not found.’
 
-\item Suppose we delete key 22 and then search for key 15. Mark an X for each statement that is guaranteed true:
-
-\begin{itemize}
-\item [\ ] Search finds key 15 without probing past its initial slot.
-\item [\ ] Search may require probing past deleted slots.
-\item [\ ] Search fails if a tombstone is not handled.
-\end{itemize}
-
-\item What assumption about the hash function ensures average-case $O(1)$ performance? \\
-\underline{\hspace{3in}}
+  \item What assumption about the hash function ensures average‐case \(O(1)\) performance?\\
+    \underline{Uniform hashing (each key equally likely to map to any slot, independently).}
+    \\
+    \textbf{Explanation (c):}  
+    Uniform hashing ensures that, on average, probes are equally likely to land anywhere, keeping the expected probe sequence short and thus guaranteeing constant‐time performance in expectation.
 \end{enumerate}
 
 \newpage
 
-\section*{Problem 2 (18 points): Binary Search Trees}
-For each code fragment below, write the number(s) of the fragments that correctly construct a BST containing the keys [5, 2, 8, 1, 3] when inserted in that order.
+\section*{Problem 2 (18 points): Binary Search Trees}
+For each code fragment below, write the number(s) that correctly build a BST containing keys \([5,2,8,1,3]\) when \emph{inserted in that order}.
 
-\begin{enumerate}
-\item \verb|Node *root = NULL; insert(&root, 5); insert(&root, 2); insert(&root, 8); insert(&root, 1); insert(&root, 3);|
-\item \verb|Node *root = create_node(5); root->left = create_node(2); root->left->left = create_node(1); root->left->right = create_node(3); root->right = create_node(8);|
-\item \verb|Node *arr[5]; arr[0] = create_node(5); arr[1] = create_node(2); arr[2] = create_node(8); arr[3] = create_node(1); arr[4] = create_node(3);|  % no pointer assignments
-\item \verb|Node *root = create_node(5); insert(&root, 8); insert(&root, 2); insert(&root, 1); insert(&root, 3);|
-\item \verb|Node *root = create_node(5); insert(&root, 2); insert(&root, 8); insert(&root, 3); insert(&root, 1);|
+\begin{enumerate}[label=\arabic*.]
+  \item
+\begin{lstlisting}[language=C]
+Node *root = NULL;
+insert(&root, 5);
+insert(&root, 2);
+insert(&root, 8);
+insert(&root, 1);
+insert(&root, 3);
+\end{lstlisting}
+  \textbf{Explanation (2.1):} This uses the standard insert function in the given order, so it builds the correct BST.
+
+  \item
+\begin{lstlisting}[language=C]
+Node *root = create_node(5);
+root->left = create_node(2);
+root->left->left = create_node(1);
+root->left->right = create_node(3);
+root->right = create_node(8);
+\end{lstlisting}
+  \textbf{Explanation (2.2):} Nodes are manually linked in the exact BST structure matching keys 5 as root, 2–1–3 on the left, and 8 on the right.
+
+  \item
+\begin{lstlisting}[language=C]
+Node *arr[5];
+arr[0]=create_node(5);
+arr[1]=create_node(2);
+arr[2]=create_node(8);
+arr[3]=create_node(1);
+arr[4]=create_node(3);
+\end{lstlisting}
+  \textbf{Explanation (2.3):} Nodes are created but never linked; no tree is formed.
+
+  \item
+\begin{lstlisting}[language=C]
+Node *root = create_node(5);
+insert(&root, 8);
+insert(&root, 2);
+insert(&root, 1);
+insert(&root, 3);
+\end{lstlisting}
+  \textbf{Explanation (2.4):} Inserts in the wrong order: 8 before 2 will place 8 as the right child first, then inserting 2 will still go left, but the structure/order of insert operations differs from the required sequence.
+
+  \item
+\begin{lstlisting}[language=C]
+Node *root = create_node(5);
+insert(&root, 2);
+insert(&root, 8);
+insert(&root, 3);
+insert(&root, 1);
+\end{lstlisting}
+  \textbf{Explanation (2.5):} Swapping the order of 1 and 3 changes the placement: 3 is inserted before 1, altering the subtree shape incorrectly.
 \end{enumerate}
+
+\noindent\textbf{Answer:} 1 and 2.  
+\textbf{Explanation (2 overall):} Only fragments (1) and (2) produce the correct BST when keys \([5,2,8,1,3]\) are inserted in that specified order. The others either never link properly or violate the insertion sequence.
 
 \newpage
 
-\section*{Problem 3 (12 points): Graph Search and Shortest Paths}
-Consider the undirected graph $G$ with adjacency lists: \\
-A: B, C \quad B: A, D, E \quad C: A, F \quad D: B \quad E: B, F \quad F: C, E
-
+\section*{Problem 3 (12 points): Graph Search and Shortest Paths}
+Consider the undirected graph \(G\) with adjacency lists:
+\[
+A: B,C;\quad
+B: A,D,E;\quad
+C: A,F;\quad
+D: B;\quad
+E: B,F;\quad
+F: C,E.
+\]
 \begin{enumerate}[label=\alph*)]
-\item BFS traversal starting from A (visit neighbors in alphabetical order): \underline{\hspace{2in}} \\
-\item DFS preorder starting from A (visit neighbors in alphabetical order): \underline{\hspace{2in}} \\
-\item DFS postorder starting from A (visit neighbors in alphabetical order): \underline{\hspace{2in}} \\
-\item Shortest-path distances from A using Dijkstra's algorithm: \underline{\hspace{3in}} (list distances for A, B, C, D, E, F) \\
-\item Does G contain a cycle? (Yes/No): \underline{\hspace{1in}} \\
-\item Is G connected? (Yes/No): \underline{\hspace{1in}} \\
+  \item BFS from A (alphabetical neighbors): \(\boxed{A,\,B,\,C,\,D,\,E,\,F}\)  
+    \\
+    \textbf{Explanation (3.a):} BFS visits nodes level by level. From A, neighbors B and C come first; then from B we enqueue D and E; from C we enqueue F.
+  \item DFS preorder from A: \(\boxed{A,\,B,\,D,\,E,\,F,\,C}\)  
+    \\
+    \textbf{Explanation (3.b):} Preorder visits the node, then recursively explores its neighbors in alphabetical order.
+  \item DFS postorder from A: \(\boxed{D,\,C,\,F,\,E,\,B,\,A}\)  
+    \\
+    \textbf{Explanation (3.c):} Postorder explores children first, then visits the node after all deeper calls return.
+  \item Dijkstra distances from A (unweighted, weight=1):
+    \[
+      \text{dist}(A)=0,\;
+      \text{dist}(B)=1,\;
+      \text{dist}(C)=1,\;
+      \text{dist}(D)=2,\;
+      \text{dist}(E)=2,\;
+      \text{dist}(F)=2
+    \]
+    \\
+    \textbf{Explanation (3.d):} All edges cost 1, so the distance is simply the minimum number of hops from A.
+  \item Cycle? \(\boxed{\text{Yes}}\)  
+    \\
+    \textbf{Explanation (3.e):} A–B–E–F–C–A forms a cycle.
+  \item Connected? \(\boxed{\text{Yes}}\)  
+    \\
+    \textbf{Explanation (3.f):} Every vertex is reachable from A.
 \end{enumerate}
 
 \newpage
 
-\section*{Problem 4 (16 points): k-d Tree Nearest Neighbor Search}
-Complete the following nearest-neighbor search code for a k-d tree.
-
-\begin{verbatim}
-typedef struct kdnode {
-    double point[2];
-    struct kdnode *left, *right;
-} kdnode;
-
-double square(double x) { return x*x; }
-
-void nearest(kdnode *root, double target[2], int depth, kdnode **best, double *bestDist) {
+\section*{Problem 4 (16 points): k‑d Tree Nearest Neighbor Search}
+Complete the code below. For each \(\tt /* n */\), write the missing recursive call.
+\begin{lstlisting}[language=C]
+// in-order: axis = depth % 2
+void nearest(kdnode *root, double target[2],
+             int depth, kdnode **best, double *bestDist) {
     if (root == NULL) return;
     int axis = depth % 2;
-    double d = square(root->point[0] - target[0]) + square(root->point[1] - target[1]);
+    double d = (root->point[0]-target[0])*(root->point[0]-target[0])
+             + (root->point[1]-target[1])*(root->point[1]-target[1]);
     if (d < *bestDist) {
         *bestDist = d;
-        *best = root;
+        *best     = root;
     }
     if (target[axis] < root->point[axis]) {
-        /* 1 */
+        /* 1 */ nearest(root->left,  target, depth+1, best, bestDist);
     } else {
-        /* 2 */
+        /* 2 */ nearest(root->right, target, depth+1, best, bestDist);
     }
     double diff = target[axis] - root->point[axis];
-    if (square(diff) < *bestDist) {
-        /* 3 */
+    if (diff*diff < *bestDist) {
+        /* 3 */ nearest(
+                  target[axis] < root->point[axis]
+                    ? root->right : root->left,
+                  target, depth+1, best, bestDist
+               );
     }
 }
-\end{verbatim}
+\end{lstlisting}
+\begin{itemize}
+  \item[\#1] \verb|nearest(root->left,  target, depth+1, best, bestDist);|  
+    \\ \textbf{Explanation (4.1):} Recurse into the subtree on the same side as the target.
+  \item[\#2] \verb|nearest(root->right, target, depth+1, best, bestDist);|  
+    \\ \textbf{Explanation (4.2):} If the target coordinate is greater, we explore the right subtree first.
+  \item[\#3] 
+\begin{lstlisting}[language=C]
+nearest(
+  target[axis] < root->point[axis]
+    ? root->right : root->left,
+  target, depth+1, best, bestDist
+);
+\end{lstlisting}
+    
+    \textbf{Explanation (4.3):} If the hypersphere around the current best crosses the splitting plane, we must explore the opposite branch as well.
+\end{itemize}
 
 \newpage
 
-\section*{Problem 5 (6 points): Heap Runtimes}
-Implementations of a priority queue:
+\section*{Problem 5 (6 points): Heap Runtimes}
+Implementations:
 \begin{itemize}
-\item A: Binary heap
-\item B: Fibonacci heap
-\item C: Unsorted array
+  \item A: Binary heap
+  \item B: Fibonacci heap
+  \item C: Unsorted array
 \end{itemize}
-
-\begin{enumerate}
-\item $\Theta(1)$ amortized insert: \underline{\hspace{1in}}
-\item $\Theta(1)$ worst-case find-minimum: \underline{\hspace{1in}}
-\item $\Theta(\log n)$ worst-case extract-minimum: \underline{\hspace{1in}}
+For each operation, write the letter (once each):
+\begin{enumerate}[label=\arabic*.]
+  \item \(\Theta(1)\) \emph{amortized} insert: \(\boxed{C}\)  
+    \\ \textbf{Explanation (5.1):} Appending to an unsorted array takes \(O(1)\).
+  \item \(\Theta(1)\) \emph{worst-case} find-min: \(\boxed{B}\)  
+    \\ \textbf{Explanation (5.2):} Fibonacci heaps maintain a pointer to the minimum, so it’s \(O(1)\).
+  \item \(\Theta(\log n)\) \emph{worst-case} extract-min: \(\boxed{A}\)  
+    \\ \textbf{Explanation (5.3):} Binary heap extract-min percolates down in \(O(\log n)\).
 \end{enumerate}
 
 \newpage
 
-\section*{Problem 6 (8 points): Depth-First Search Code Completion}
-Complete the following recursive DFS traversal:
-
-\begin{verbatim}
+\section*{Problem 6 (8 points): Depth‑First Search Code Completion}
+\begin{lstlisting}[language=C]
 void dfs(Graph *g, int v) {
-    /* 1 */               // mark v as visited
+    /* 1 */ visited[v] = true;                // mark v
     printf("%d ", v);
     for (int u = 0; u < g->n; u++) {
-        if (/* 2 */) {    // u is adjacent to v and not yet visited
-            /* 3 */       // recursive call on u
+        if (g->adj[v][u] && !visited[u]) {    // edge exists & not visited
+            /* 3 */ dfs(g, u);
         }
     }
 }
-\end{verbatim}
+\end{lstlisting}
+\begin{itemize}
+  \item[\#1] \verb|visited[v] = true;|  
+    \\ \textbf{Explanation (6.1):} We mark the current node as visited to avoid cycles.
+  \item[\#2] In the \verb|if| clause: \verb|g->adj[v][u] && !visited[u]|  
+    \\ \textbf{Explanation (6.2):} We only recurse if there’s an edge and the neighbor is unvisited.
+  \item[\#3] \verb|dfs(g, u);|  
+    \\ \textbf{Explanation (6.3):} Recurse on the neighbor u.
+\end{itemize}
 
 \newpage
 
-\section*{Problem 7 (15 points): AVL Tree Traversals}
-Starting from an empty AVL tree, insert the following sequences of keys.
-
+\section*{Problem 7 (15 points): AVL Tree Traversals}
+Insert and then give preorder and inorder of the resulting balanced tree.
 \begin{enumerate}[label=\alph*)]
-\item 30, 20, 10\\
-Preorder: \underline{\hspace{2in}} \quad Inorder: \underline{\hspace{2in}} \\
-\item 10, 20, 30\\
-Preorder: \underline{\hspace{2in}} \quad Inorder: \underline{\hspace{2in}} \\
-\item 20, 10, 30, 25, 27\\
-Preorder: \underline{\hspace{2in}} \quad Inorder: \underline{\hspace{2in}} \\
+  \item Insert \(\{30,20,10\}\):  
+    \\
+    Preorder: \(\boxed{20,\,10,\,30}\)  
+    \\ Inorder:  \(\boxed{10,\,20,\,30}\)  
+    \\
+    \textbf{Explanation (7.a):} A right–right imbalance at 30–20–10 triggers a single right rotation at 20.
+  \item Insert \(\{10,20,30\}\):  
+    \\
+    Preorder: \(\boxed{20,\,10,\,30}\)  
+    \\ Inorder:  \(\boxed{10,\,20,\,30}\)  
+    \\
+    \textbf{Explanation (7.b):} A left–left imbalance at 10–20–30 triggers a single left rotation at 20.
+  \item Insert \(\{20,10,30,25,27\}\):  
+    \\
+    Preorder: \(\boxed{20,\,10,\,27,\,25,\,30}\)  
+    \\ Inorder:  \(\boxed{10,\,20,\,25,\,27,\,30}\)  
+    \\
+    \textbf{Explanation (7.c):} Insertion of 27 under the right subtree of 20 creates a left–right case at 30; fix with right rotation at 30’s left child (25), then left rotation at 20.
 \end{enumerate}
 
 \newpage
 
-\section*{Problem 8 (16 points): Dijkstra's Algorithm Code Completion}
-\begin{verbatim}
+\section*{Problem 8 (16 points): Dijkstra's Algorithm Code Completion}
+\begin{lstlisting}[language=C]
 void dijkstra(Graph *g, int src) {
     int dist[MAXV];
     bool known[MAXV] = {false};
-    /* 1 */             // initialize dist[v] for all v
+    /* 1 */ for (int v = 0; v < g->n; v++) dist[v] = INT_MAX;
     dist[src] = 0;
     for (int i = 0; i < g->n; i++) {
-        int v = /* 2 */;    // select unknown v with minimum dist
+        /* 2 */ int v = minVertex(dist, known, g->n);  // find unknown min
         known[v] = true;
         for (Edge *e = g->adj[v]; e != NULL; e = e->next) {
             int w = e->to;
             int wgt = e->weight;
-            if (/* 3 */) {  // relaxation condition
-                /* 4 */     // update dist[w]
+            /* 3 */ if (!known[w] && dist[v] + wgt < dist[w]) {
+                /* 4 */ dist[w] = dist[v] + wgt;
             }
         }
     }
 }
-\end{verbatim}
+\end{lstlisting}
+\begin{itemize}
+  \item[\#1] \verb|for(int v=0; v<g->n; v++) dist[v]=INT_MAX;|  
+    \\ \textbf{Explanation (8.1):} Initialize all distances to “infinite.”
+  \item[\#2] \verb|int v = minVertex(dist, known, g->n);|  
+    \\ \textbf{Explanation (8.2):} Select the nearest unknown vertex.
+  \item[\#3] \verb|!known[w] && dist[v] + wgt < dist[w]|  
+    \\ \textbf{Explanation (8.3):} Check if going through v gives a shorter path to w.
+  \item[\#4] \verb|dist[w] = dist[v] + wgt;|  
+    \\ \textbf{Explanation (8.4):} Relax the edge by updating w’s distance.
+\end{itemize}
 
 \end{document}

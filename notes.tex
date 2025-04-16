@@ -49,7 +49,7 @@
       \item[\ ] insert 4
       \item[\ ] insert 15
     \end{itemize}
-    \\
+
     \textbf{Explanation (a):}  
     The load factor is the number of entries divided by capacity. After inserting 10 and 22, load = \(2/4 = 0.5\), which is at threshold but does not exceed it. Inserting 31 makes load = \(3/4 = 0.75 > 0.5\), so the table is resized at that insertion.
 
@@ -59,7 +59,7 @@
       \item[X] Search may require probing past deleted slots.
       \item[X] Search fails if a tombstone is not handled.
     \end{itemize}
-    \\
+
     \textbf{Explanation (b):}  
     Deletion leaves a tombstone at 22’s slot. If 15 hashed to a later slot, the search must probe past the tombstone to find it. Without special handling of tombstones, the probe might stop early and wrongly report ‘not found.’
 

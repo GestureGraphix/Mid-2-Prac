@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1744839355 "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.tex" "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.pdf" "notes" 1744839355
+["pdflatex"] 1744839379 "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.tex" "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.pdf" "notes" 1744839379
   "/etc/texmf/web2c/texmf.cnf" 1617974667 40935 950c859ef6aa64cd9f8caa18792b2c7d ""
-  "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.aux" 1744839355 8 a94a2480d3289e625eea47cd1b285758 ""
-  "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.tex" 1744839355 12085 c8cbbee4f8bf42fcc959f0c7dbdecb60 ""
+  "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.aux" 1744839379 33 06c322e1d88c4778ac780ba5e7d05c77 ""
+  "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.tex" 1744839378 12073 a5c52dd80bc0d60ce773b60109dd8e5b ""
   "/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texmf/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -73,11 +73,11 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1617974667 40935 950c859ef6aa64cd9f8caa18792b2c7d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1737166436 5175355 cdab57a66732305fc52dc8bf1694ca9d ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1737166327 2724546 eb4ee59b3748dcc0747b79c0ae2a910b ""
-  "notes.aux" 0 -1 0 "pdflatex"
-  "notes.tex" 1744839355 12085 c8cbbee4f8bf42fcc959f0c7dbdecb60 ""
+  "notes.aux" 1744839379 33 06c322e1d88c4778ac780ba5e7d05c77 "pdflatex"
+  "notes.tex" 1744839378 12073 a5c52dd80bc0d60ce773b60109dd8e5b ""
   (generated)
   "notes.log"
   "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.log"
+  "notes.pdf"
   "notes.aux"
   "/home/alex/Documents/CPSC 223/Mid 2 Prac/notes.pdf"
-  "notes.pdf"

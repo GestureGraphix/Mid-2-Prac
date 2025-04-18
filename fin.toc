@@ -1,0 +1,11 @@
+\contentsline {section}{\numberline {1}Hash Tables}{2}{}%
+\contentsline {section}{\numberline {2}Binary Search Trees (BST)}{4}{}%
+\contentsline {section}{\numberline {3}AVL Trees}{6}{}%
+\contentsline {paragraph}{Right Rotation (LL Case)}{6}{}%
+\contentsline {paragraph}{Left Rotation (RR Case)}{6}{}%
+\contentsline {paragraph}{Double Rotations}{7}{}%
+\contentsline {section}{\numberline {4}Red–Black Trees}{8}{}%
+\contentsline {section}{\numberline {5}$k$‑d Trees}{9}{}%
+\contentsline {section}{\numberline {6}Binary Heaps}{10}{}%
+\contentsline {section}{\numberline {7}Graphs: BFS \& DFS}{11}{}%
+\contentsline {section}{\numberline {8}Shortest‑Path Algorithms}{13}{}%

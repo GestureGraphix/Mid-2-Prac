@@ -1,0 +1,177 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+  breaklines=true,
+  basicstyle=\small\ttfamily,
+  columns=fullflexible,
+  frame=single,
+  breakatwhitespace=true,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange}
+}
+
+\begin{document}
+\title{CPSC 223 Spring 2025\\Practice Midterm \#1}
+\author{}
+\date{\today}
+\maketitle
+
+\noindent\textbf{Instructions:} Write your name and NetID on your answer sheet. You may use one 8½×11" crib sheet (both sides). No electronic devices. Show all work for partial credit. For multiple-choice questions, fill in the box.
+
+\vspace{1em}
+
+%% Problem 1
+\section*{Problem 1: Basics (15 points)}
+\begin{enumerate}
+  \item[(a)] (3 pts) Given the files below, mark an X next to each file that contains the machine code for the function \texttt{process\_data} after running \texttt{make}.\\
+  \texttt{dataio.h}\quad \texttt{dataio.c}\quad \texttt{dataio.o}\quad \texttt{main.c}\\
+  \texttt{main.o}\quad \texttt{process\_data.c}\quad \texttt{utils.c}\quad \texttt{utils.h}
+  \\
+
+  \item[(b)] (5 pts) Complete the code below: fill blanks (1)--(4) with letters (A)--(F).\\
+  \begin{lstlisting}[language=C]
+typedef struct {
+  char *name;
+  int  score;
+} Player;
+
+Player *p = NULL;
+/* 1 */
+p->name = strdup("Alice");
+/* 2 */
+printf("%s: %d\n", p->name, p->score);
+free(/* 3 */);
+/* 4 */
+  
+A. p = malloc(sizeof *p);        B. p = calloc(1, sizeof *p);
+C. p = malloc(sizeof(Player));   D. p->score = 0;
+E. free(p->name);                F. free(p);
+  \end{lstlisting}
+
+  \item[(c)] (4 pts) Write the prototype for a function \texttt{apply} that takes an array of \texttt{double} of length \texttt{n} and a function pointer \texttt{double→double}, and returns a newly allocated \texttt{double*} with transformed values.
+
+  \item[(d)] (3 pts) Explain what happens if you call \texttt{free} twice on the same pointer. Why is this dangerous?
+
+  \item[(e)] (3 pts) Given this typedef:
+  \begin{lstlisting}[language=C]
+typedef void (*op_fn)(int*, int);
+  \end{lstlisting}
+  Write a function \texttt{map\_array} that takes an \texttt{int* arr}, its length \texttt{n}, and an \texttt{op\_fn} to apply to each element in place.
+\end{enumerate}
+
+%% Problem 2
+\section*{Problem 2: Algorithms (20 points)}
+\begin{enumerate}
+  \item[(a)] (6 pts) For each snippet, give the tightest Big-O in terms of \(n\):\\
+  \begin{enumerate}
+    \item \texttt{for(int i=0;i<n;i++) for(int j=i+1;j<n;j++) work();}
+    \item \texttt{int i=1; while(i<n){ work(); i*=2; }}
+    \item \texttt{qsort(a,n,sizeof *a,cmp);}
+    \item \texttt{linear\_search(a,n,key);}
+    \item \texttt{merge\_sorted(x,m,y,m);}
+  \end{enumerate}
+
+  \item[(b)] (6 pts) Describe in-place partitioning in quicksort, and why worst-case is \(\Theta(n^2)\).
+
+  \item[(c)] (8 pts) Sorted array sum-to-\(T\) in \(\Theta(n)\): give two-pointer pseudocode and explain correctness.
+\end{enumerate}
+
+%% Problem 3
+\section*{Problem 3: Arrays, Array Lists, Linked Lists (20 points)}
+\begin{enumerate}
+  \item[(a)] (8 pts) Table: for each operation, fill in \(\Theta\)-time for (i) fixed C array, (ii) doubling array list, (iii) singly-linked list with head only.\\
+  \begin{tabular}{l|c|c|c}
+    Operation               & Array & Array List & Singly-Linked \\
+    \hline
+    Append at end           &       &            &               \\
+    Remove at index \(i\)   &       &            &               \\
+    Get element at index \(i\)&    &            &               \\
+    Insert at front         &       &            &               \\
+  \end{tabular}
+
+  \item[(b)] (6 pts) Draw the memory diagram after:
+  \begin{lstlisting}[language=C]
+int *a = malloc(4*sizeof *a);
+for(int i=0;i<4;i++) a[i]=i+1;
+int *b = a+2;
+int  c[4];
+for(int i=0;i<4;i++) c[i] = a[i]*2;
+  \end{lstlisting}
+
+  \item[(c)] (6 pts) Write \texttt{push\_front} and \texttt{pop\_front} for a singly-linked list of \texttt{int} with global \texttt{node* head}.
+\end{enumerate}
+
+%% Problem 4
+\section*{Problem 4: Trees (15 points)}
+\begin{enumerate}
+  \item[(a)] (5 pts) Draw BST inserting \(M, C, T, A, J, P, X\) in that order.
+  \item[(b)] (5 pts) What insertion order yields minimum-height? What yields maximum-height?
+  \item[(c)] (5 pts) Complete this C function for tree height:
+  \begin{lstlisting}[language=C]
+int tree_height(node *r) {
+  if(r==NULL) return 0;
+  int hl = /*1*/;
+  int hr = /*2*/;
+  return /*3*/;
+}
+  \end{lstlisting}
+  Fill in (1)--(3).
+\end{enumerate}
+
+%% Problem 5
+\section*{Problem 5: Stacks, Queues, Hashtables (15 points)}
+\begin{enumerate}
+  \item[(a)] (6 pts) For each ADT, state \(\Theta\)-time of core ops: stack (push/pop), queue (enqueue/dequeue), hashtable (insert/lookup).
+  \item[(b)] (4 pts) Given ring-buffer queue:
+  \begin{quote}
+  capacity=8, head=5, tail=2\\
+  indices: 0\;1\;2\;3\;4\;5\;6\;7\\
+  array: $[,,X,,,A,B,C,_]$
+  \end{quote}
+  Show state after: enqueue D; dequeue twice; enqueue E, F.
+  \item[(c)] (5 pts) Implement \texttt{bool contains\_cycle(node* head);} using tortoise and hare.
+\end{enumerate}
+
+%% Problem 6
+\section*{Problem 6: Practice Exam Review (10 points)}
+\begin{enumerate}
+  \item[(a)] (5 pts) For snippets below, write \texttt{INVALID}, \texttt{UNDEFINED}, or the output. Assume variables set up as in class examples.
+  \begin{enumerate}
+    \item \texttt{b++; printf("\$\%\ c\\n", b[0]);}
+    \item \texttt{(*b)++; printf("\$\% \textbackslash n", a);}
+    \item \texttt{c = \&b[0]; printf("\$\%\ s\\n", *c);}
+  \end{enumerate}
+  \item[(b)] (5 pts) For each data structure below, give the asymptotic time of \texttt{remove\_incoming(v)} in a directed graph with \(V\) vertices and \(E\) edges: (i) adjacency matrix, (ii) adjacency list.
+\end{enumerate}
+
+%% Problem 7
+\section*{Problem 7: ADT Implementation (10 points)}
+Complete the C function to remove every other element from a doubly-linked list (head/tail pointers), no leaks:
+\begin{lstlisting}[language=C]
+void list_thin(list *l) {
+  list_node *n = l->head;
+  while(n && n->next) {
+    list_node *n2 = n->next->next;
+    /* A: free second node */
+    /* B: relink pointers to skip freed node */
+    if(l->tail == n->next) l->tail = n;
+    n = n2;
+  }
+}
+\end{lstlisting}
+Fill in A and B with proper statements.
+
+%% Problem 8
+\section*{Problem 8: Graphs (15 points)}
+\begin{enumerate}
+  \item[(a)] (7 pts) True/False: Incidence graph of the Fano plane is nonplanar because it contains a subdivision of \(K_{3,3}\). Justify or sketch.
+  \item[(b)] (8 pts) Write Dijkstra’s algorithm in pseudocode, showing initialization, relax, and priority queue ops.
+\end{enumerate}
+
+\vfill
+\noindent\textbf{Good luck!}
+\end{document}
